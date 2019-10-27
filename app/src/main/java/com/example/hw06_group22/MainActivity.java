@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-public class MyProfileActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     ImageButton imageButton;
     EditText et_FirstName, et_LastName, et_StudentID;
