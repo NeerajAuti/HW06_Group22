@@ -10,6 +10,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.text.Layout;
 import android.util.Log;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 public class MyProfileFragment extends Fragment {
 
+    private SharedViewModel model;
     ImageButton imageButton;
     private EditText et_FirstName, et_LastName, et_StudentID;
     RadioGroup rg_Department;
@@ -60,6 +62,7 @@ public class MyProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         btn_Save = view.findViewById(R.id.btn_Save);
         rb_CS = view.findViewById(R.id.rb_CS);
         rb_BIO = view.findViewById(R.id.rb_BIO);
@@ -79,6 +82,12 @@ public class MyProfileFragment extends Fragment {
         btn_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                StudentData data =new StudentData();
+                data.FirstName=et_FirstName.getText().toString();
+                data.LastName=et_LastName.getText().toString();
+                data.StudentID=et_StudentID.getText().toString();
+                model.select(data);
+
                 mListener.gotoDisplayScreen();
             }
         });

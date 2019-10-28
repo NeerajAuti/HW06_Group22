@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements MyProfileFragment
 
     @Override
     public void gotoDisplayScreen() {
-        //getSupportFragmentManager().beginTransaction().replace(R.id.container, new DisplayFragment(), "avatar").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new DisplayFragment(), "display").commit();
     }
 
     @Override
