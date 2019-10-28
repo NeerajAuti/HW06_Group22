@@ -23,7 +23,7 @@ public class AvatarFragment extends Fragment {
     private OnImageSelected mListener;
 
     public interface OnImageSelected {
-        public void gotoMyProfile(@DrawableRes int image);
+        public void gotoMyProfileFromAvatar(@DrawableRes int image);
     }
     public AvatarFragment() {
         // Required empty public constructor
@@ -48,7 +48,7 @@ public class AvatarFragment extends Fragment {
         F1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.gotoMyProfile(R.drawable.avatar_f_1);
+                mListener.gotoMyProfileFromAvatar(R.drawable.avatar_f_1);
             }
         });
         return view;
