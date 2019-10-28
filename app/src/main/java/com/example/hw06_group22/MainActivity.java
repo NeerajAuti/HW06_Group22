@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity implements MyProfileFragment
 
     @Override
     public void gotoMyProfile(@DrawableRes int image) {
-        //myProfileFragment.gotoMyProfile1(image);
-        //getSupportFragmentManager().beginTransaction().replace(R.id.container,myProfileFragment).addToBackStack(null).commit();
         getSupportFragmentManager().popBackStack();
         myProfileFragment.setImageButton(image);
     }

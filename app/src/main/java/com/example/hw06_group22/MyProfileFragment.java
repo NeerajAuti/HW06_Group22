@@ -1,5 +1,6 @@
 package com.example.hw06_group22;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -33,8 +34,10 @@ public class MyProfileFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public void setImageButton(@DrawableRes int image) {
-        Log.d("test1", "onClick: " + R.id.imageButton);
 //        imageButton.setImageDrawable(getResources().getDrawable(R.drawable.avatar_f_1,null));
+        Log.d("test1", "onClick: "+et_FirstName.getText().toString());
+        et_FirstName.setText("456");
+        Log.d("test1", "onClick: "+et_FirstName.getText().toString());
     }
 
     public interface OnFragmentInteractionListener {
@@ -83,23 +86,8 @@ public class MyProfileFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        mListener = (OnFragmentInteractionListener) context;
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onAttach(Activity activity) {
+        mListener = (OnFragmentInteractionListener) activity;
+        super.onAttach(activity);
     }
 }
