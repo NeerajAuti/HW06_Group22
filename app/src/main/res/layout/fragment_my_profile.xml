@@ -17,23 +17,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_StudentID" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="164dp"
-        android:layout_height="158dp"
-        android:layout_marginStart="123dp"
-        android:layout_marginTop="53dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/select_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/et_FirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="41dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="53dp"
         android:ems="10"
         android:hint="First Name"
         android:inputType="textPersonName"
@@ -60,7 +49,8 @@
         android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Student ID"
-        android:inputType="textPersonName"
+        android:inputType="number"
+        android:maxLength="9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_LastName" />
 
@@ -112,6 +102,16 @@
         android:text="Save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rg_department" />
+
+    <ImageView
+        android:id="@+id/imageButton"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="53dp"
+        android:src="@drawable/select_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

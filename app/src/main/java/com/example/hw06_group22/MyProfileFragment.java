@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ import com.google.gson.Gson;
 public class MyProfileFragment extends Fragment {
 
     private SharedViewModel model;
-    ImageButton imageButton;
+    ImageView imageButton;
     private EditText et_FirstName, et_LastName, et_StudentID;
     RadioGroup rg_Department;
     RadioButton rb_CS, rb_SIS, rb_BIO, rb_Other;
@@ -39,53 +40,10 @@ public class MyProfileFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     @DrawableRes
     int current_image;
-
-    public void setImageButton(@DrawableRes int image) {
-//        imageButton.setImageDrawable(getResources().getDrawable(R.drawable.avatar_f_1,null));
-        Log.d("test1", "onClick: " + et_FirstName.getText().toString());
-        et_FirstName.setText("456");
-        current_image = R.drawable.avatar_f_1;
-        Log.d("test1", "onClick: " + et_FirstName.getText().toString());
-    }
-
-    public void setStudentDetails(StudentData data) {
-        Log.d("test3", "setStudentDetails: " + data.toString());
-        et_FirstName.setText(data.FirstName);
-        et_LastName.setText(data.LastName);
-        et_StudentID.setText(data.StudentID);
-        imageButton.setImageResource(data.image);
-        switch (data.Department) {
-            case "CS":
-                rb_CS.setChecked(true);
-                rb_BIO.setChecked(false);
-                rb_Other.setChecked(false);
-                rb_SIS.setChecked(false);
-                break;
-            case "BIO":
-                rb_CS.setChecked(false);
-                rb_BIO.setChecked(true);
-                rb_Other.setChecked(false);
-                rb_SIS.setChecked(false);
-                break;
-            case "Other":
-                rb_CS.setChecked(false);
-                rb_BIO.setChecked(false);
-                rb_Other.setChecked(true);
-                rb_SIS.setChecked(false);
-                break;
-            case "SIS":
-                rb_CS.setChecked(false);
-                rb_BIO.setChecked(false);
-                rb_Other.setChecked(false);
-                rb_SIS.setChecked(true);
-                break;
-            default:
-                break;
-        }
-    }
+    StudentData data = new StudentData();
 
     public interface OnFragmentInteractionListener {
-        public void gotoSelectAvatar();
+        public void gotoSelectAvatar(StudentData data);
 
         public void gotoDisplayScreen(StudentData data);
     }
@@ -94,6 +52,19 @@ public class MyProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static MyProfileFragment newInstance(@DrawableRes int image, StudentData data) {
+        Bundle bundle = new Bundle();
+        bundle.putString("FirstName", data.FirstName);
+        bundle.putString("LastName", data.LastName);
+        bundle.putString("Department", data.Department);
+        bundle.putString("StudentID", data.StudentID);
+        bundle.putInt("image", image);
+
+        MyProfileFragment fragment = new MyProfileFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,10 +86,69 @@ public class MyProfileFragment extends Fragment {
         et_FirstName = view.findViewById(R.id.et_FirstName);
         et_StudentID = view.findViewById(R.id.et_StudentID);
         et_LastName = view.findViewById(R.id.et_LastName);
+        if (getArguments() != null) {
+            data.FirstName = getArguments().getString("FirstName");
+            data.LastName = getArguments().getString("LastName");
+            data.Department = getArguments().getString("Department");
+            data.StudentID = getArguments().getString("StudentID");
+            data.image = getArguments().getInt("image");
+
+            et_FirstName.setText(data.FirstName);
+            et_LastName.setText(data.LastName);
+            et_StudentID.setText(data.StudentID);
+            imageButton.setImageResource(data.image);
+            current_image = data.image;
+            if (data.Department != null) {
+
+                switch (data.Department) {
+                    case "CS":
+                        rb_CS.setChecked(true);
+                        rb_BIO.setChecked(false);
+                        rb_Other.setChecked(false);
+                        rb_SIS.setChecked(false);
+                        break;
+                    case "BIO":
+                        rb_CS.setChecked(false);
+                        rb_BIO.setChecked(true);
+                        rb_Other.setChecked(false);
+                        rb_SIS.setChecked(false);
+                        break;
+                    case "Other":
+                        rb_CS.setChecked(false);
+                        rb_BIO.setChecked(false);
+                        rb_Other.setChecked(true);
+                        rb_SIS.setChecked(false);
+                        break;
+                    case "SIS":
+                        rb_CS.setChecked(false);
+                        rb_BIO.setChecked(false);
+                        rb_Other.setChecked(false);
+                        rb_SIS.setChecked(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.gotoSelectAvatar();
+                Log.d("test3", "setStudentDetails: " + getActivity());
+
+                if (rb_BIO.isChecked())
+                    data.Department = "BIO";
+                if (rb_CS.isChecked())
+                    data.Department = "CS";
+                if (rb_Other.isChecked())
+                    data.Department = "Other";
+                if (rb_SIS.isChecked())
+                    data.Department = "SIS";
+                data.FirstName = et_FirstName.getText().toString();
+                data.LastName = et_LastName.getText().toString();
+                data.StudentID = et_StudentID.getText().toString();
+                data.image = current_image;
+                mListener.gotoSelectAvatar(data);
+
             }
         });
         btn_Save.setOnClickListener(new View.OnClickListener() {
@@ -128,12 +158,13 @@ public class MyProfileFragment extends Fragment {
 
                 if (rg_Department.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getActivity(), "Select Department", Toast.LENGTH_SHORT);
-                } else if (et_FirstName.getText().toString() == null || et_FirstName.getText().toString() == "") {
+                } else if (et_FirstName.getText().toString() == null || et_FirstName.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "Enter First Name", Toast.LENGTH_SHORT);
-                } else if (et_LastName.getText().toString() == null || et_LastName.getText().toString() == "") {
+                } else if (et_LastName.getText().toString() == null || et_LastName.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "Enter Last Name", Toast.LENGTH_SHORT);
 
-                } else if (et_StudentID.getText().toString() == null || et_StudentID.getText().toString() == "") {
+                } else if (et_StudentID.getText().toString() == null || et_StudentID.getText().toString().isEmpty() || et_StudentID.getText().toString().length()
+                        < 9) {
                     Toast.makeText(getActivity(), "Enter Student ID", Toast.LENGTH_SHORT);
                 } else {
                     if (rb_BIO.isChecked())
@@ -147,7 +178,6 @@ public class MyProfileFragment extends Fragment {
                     data.FirstName = et_FirstName.getText().toString();
                     data.LastName = et_LastName.getText().toString();
                     data.StudentID = et_StudentID.getText().toString();
-                    current_image = R.drawable.avatar_f_1;
                     data.image = current_image;
                     model.select(data);
                     mListener.gotoDisplayScreen(data);
@@ -162,4 +192,5 @@ public class MyProfileFragment extends Fragment {
         mListener = (OnFragmentInteractionListener) activity;
         super.onAttach(activity);
     }
+
 }
