@@ -1,27 +1,50 @@
 package com.example.hw06_group22;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyProfileFragment.OnFragmentInteractionListener,AvatarFragment.OnImageSelected {
 
-    ImageButton imageButton;
-    EditText et_FirstName, et_LastName, et_StudentID;
-    RadioGroup rg_Department;
-    RadioButton rb_CS, rb_SIS, rb_BIO, rb_Other;
-    Button btn_Save;
-
+    ConstraintLayout container;
+    MyProfileFragment  myProfileFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("My Profile");
+        container = findViewById(R.id.container);
+        myProfileFragment=new MyProfileFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.container,myProfileFragment).commit();
+        //container.addView();
+
+    }
+
+    @Override
+    public void gotoSelectAvatar() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new AvatarFragment(), "avatar").addToBackStack(null).commit();
+    }
+
+    @Override
+    public void gotoDisplayScreen() {
+        //getSupportFragmentManager().beginTransaction().replace(R.id.container, new DisplayFragment(), "avatar").commit();
+    }
+
+    @Override
+    public void gotoMyProfile(@DrawableRes int image) {
+        //myProfileFragment.gotoMyProfile1(image);
+        //getSupportFragmentManager().beginTransaction().replace(R.id.container,myProfileFragment).addToBackStack(null).commit();
+        getSupportFragmentManager().popBackStack();
+        myProfileFragment.setImageButton(image);
     }
 }
